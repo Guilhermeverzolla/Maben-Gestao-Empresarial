@@ -112,7 +112,7 @@ function perguntaAoAgente(pasta, prompt, papel, limiteMs) {
                   '--max-turns', String(4), // no máximo N consultas ao projeto
                   '--append-system-prompt', papel];
     const proc = spawn(dep.CLAUDE_BIN, args,
-      { cwd: pasta, env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
+      { cwd: pasta, env: process.env, stdio: ['pipe', 'pipe', 'pipe'], windowsHide: true });
 
     let saida = '', erro = '';
     const corta = setTimeout(() => { try { proc.kill(); } catch (e) {} }, limiteMs);

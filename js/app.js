@@ -8,7 +8,7 @@ const ctx = cv.getContext('2d');
 const $   = s => document.querySelector(s);
 const $$  = s => Array.from(document.querySelectorAll(s));
 
-const opts = { rgb: true, names: true, status: true, paths: false };
+const opts = { rgb: false, names: true, status: true, paths: false };
 
 /* ===========================================================
    CÂMERA
@@ -306,7 +306,7 @@ class Actor {
     if (opts.names) {
       stack -= AVATAR.nameTag(ctx, p.x, stack, this.a.name,
                               this.a.boss ? '#c4b8ff' : col,
-                              this.a.boss ? 'DONO' : null) + 4;
+                              this.a.boss ? 'CHEFE' : null) + 4;
     }
     if (opts.status && !this.moving) {
       const ic = this.a.status === 'trabalhando' ? '💻'
@@ -436,7 +436,7 @@ function frame(now) {
   // fundo
   if (!bgCache || bgCache.w !== cw || bgCache.h !== ch) {
     const g = ctx.createRadialGradient(cw / 2, ch * .42, 40, cw / 2, ch * .42, Math.max(cw, ch) * .8);
-    g.addColorStop(0, '#141a2e'); g.addColorStop(.6, '#090b13'); g.addColorStop(1, '#05060a');
+    g.addColorStop(0, '#3a2c22'); g.addColorStop(.6, '#241a14'); g.addColorStop(1, '#150f0b');
     bgCache = { g, w: cw, h: ch };
   }
   ctx.fillStyle = bgCache.g; ctx.fillRect(0, 0, cw, ch);
@@ -667,12 +667,12 @@ function renderHire() {
 function renderRooms() {
   const box = $('#rooms-list');
   box.innerHTML = '';
-  const order = ['diretoria', 'servico', 'lounge', 'reuniao', 'corredor'];
+  const order = ['diretoria', 'servico', 'inteligencia', 'bpo', 'lounge', 'reuniao', 'jardim', 'corredor'];
   for (const id of order) {
     const r = WORLD.ROOMS[id];
     const inside = Array.from(actors.values()).filter(ac =>
       !ac.hidden && WORLD.roomAt(Math.round(ac.x), Math.round(ac.y)) === id);
-    const cap = id === 'servico' ? 18 : id === 'diretoria' ? 2 : id === 'reuniao' ? 8 : id === 'lounge' ? FURN.restSlots.length : 0;
+    const cap = id === 'servico' ? 5 : id === 'inteligencia' ? 2 : id === 'bpo' ? 3 : id === 'diretoria' ? 1 : id === 'reuniao' ? 8 : id === 'lounge' ? FURN.restSlots.length : 0;
     const pct = cap ? Math.min(100, inside.length / cap * 100) : 0;
     const el = document.createElement('div');
     el.className = 'roomcard';
@@ -682,7 +682,7 @@ function renderRooms() {
       <div class="rmeta" style="color:${r.accent}">${inside.length} pessoa(s) agora${cap ? ` · ${cap} lugares` : ''}</div>
       ${cap ? `<div class="bar"><i style="width:${pct}%;background:${r.accent}"></i></div>` : ''}`;
     el.addEventListener('click', () => {
-      if (id === 'corredor') focusTile(24, 20, 0.7);
+      if (id === 'corredor') focusTile(32, 20, 0.7);
       else focusTile((r.x1 + r.x2) / 2, (r.y1 + r.y2) / 2, 0.7);
     });
     box.appendChild(el);
@@ -694,7 +694,7 @@ function renderStats() {
   $('#st-idle').textContent = ROSTER.count('descanso');
   $('#st-off').textContent  = ROSTER.count('offline');
   const leg = $('#roomlegend');
-  leg.innerHTML = ['diretoria', 'servico', 'lounge', 'reuniao'].map(id => {
+  leg.innerHTML = ['diretoria', 'servico', 'inteligencia', 'bpo', 'lounge', 'reuniao', 'jardim'].map(id => {
     const r = WORLD.ROOMS[id];
     const n = Array.from(actors.values()).filter(ac =>
       !ac.hidden && WORLD.roomAt(Math.round(ac.x), Math.round(ac.y)) === id).length;

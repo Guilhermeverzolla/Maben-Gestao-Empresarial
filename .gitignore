@@ -6,3 +6,8 @@ data/*.json
 !data/config.exemplo.json
 data/logs/
 data/reunioes/
+
+# estado dos painéis dos agentes (rotina do dia e anotações)
+agentes/estado/
+data/registros/
+data/atividade.jsonl

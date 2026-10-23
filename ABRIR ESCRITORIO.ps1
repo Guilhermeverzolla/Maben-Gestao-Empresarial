@@ -9,8 +9,8 @@ function NoAr {
 }
 
 if (-not (NoAr)) {
-  $cmd = 'cmd /c "' + (Join-Path $pasta 'INICIAR ESCRITORIO.cmd') + '"'
-  ([wmiclass]'Win32_Process').Create($cmd, $pasta) | Out-Null
+  $vbs = Join-Path $pasta 'ESCRITORIO OCULTO.vbs'
+  Start-Process wscript.exe -ArgumentList ('"' + $vbs + '"') -WorkingDirectory $pasta -WindowStyle Hidden
   for ($i = 0; $i -lt 40 -and -not (NoAr); $i++) { Start-Sleep -Milliseconds 750 }
 }
 

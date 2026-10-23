@@ -4,15 +4,15 @@
    =========================================================== */
 const WORLD = (() => {
 
-  const W = 48, H = 34;
+  const W = 64, H = 34;
 
   const VOID = 0, FLOOR = 1, WALL = 2, DOOR = 3;
 
-  /* ---------- paleta ---------- */
+  /* ---------- paleta: casa de madeira clara, paredes cor de areia ---------- */
   const C = {
-    fire1: '#7c6cff', fire2: '#9d8cff', fire3: '#f59e0b',
-    volt1: '#38bdf8', volt2: '#2563eb',
-    dark:  '#0b0d15', wall: '#1b2033', wallTop: '#2a3149'
+    fire1: '#b4562f', fire2: '#d98a5b', fire3: '#c98a2b',
+    volt1: '#3f7f9e', volt2: '#2563eb',
+    dark:  '#2a211b', wall: '#e8dccb', wallTop: '#f6efe3'
   };
 
   /* ---------- salas ---------- */
@@ -21,51 +21,82 @@ const WORLD = (() => {
       id: 'diretoria', name: 'DIRETORIA', short: 'Diretoria',
       bx: 0, by: 0, bw: 15, bh: 19,
       x1: 1, y1: 1, x2: 13, y2: 17,
-      accent: C.fire1,
-      floorA: '#241a24', floorB: '#2c2030',
-      desc: 'Sua sala. Vidro fumê, troféu, quadro de ideias e duas estações premium.'
+      accent: '#b4562f',
+      floorA: '#7a5238', floorB: '#835a3e',
+      desc: 'Sala do chefe: escrivaninha, sofá, mesa de centro, TV, tapetes e quadro de anotações.'
     },
     servico: {
-      id: 'servico', name: 'SALA DE SERVIÇO', short: 'Serviço',
-      bx: 18, by: 0, bw: 30, bh: 19,
-      x1: 19, y1: 1, x2: 46, y2: 17,
-      accent: C.volt1,
-      floorA: '#111725', floorB: '#151c2e',
-      desc: 'Área ampla de operação. 18 estações gamer com RGB — é aqui que o trabalho acontece.'
+      id: 'servico', name: 'SETOR CONTÁBIL', short: 'Contábil',
+      bx: 18, by: 0, bw: 18, bh: 19,
+      x1: 19, y1: 1, x2: 34, y2: 17,
+      accent: '#3f7f9e',
+      floorA: '#c4a07a', floorB: '#cbaa84',
+      desc: 'Fiscal, Departamento Pessoal, Contabilidade, Legalização e CFO financeiro.'
+    },
+    inteligencia: {
+      id: 'inteligencia', name: 'INTELIGÊNCIA DO CLIENTE', short: 'Inteligência',
+      bx: 39, by: 0, bw: 11, bh: 19,
+      x1: 40, y1: 1, x2: 48, y2: 17,
+      accent: '#6d5bd0',
+      floorA: '#8b97a8', floorB: '#94a0b1',
+      desc: 'Planejamento tributário, ICMS estadual, ISS municipal e gestão empresarial.'
+    },
+    bpo: {
+      id: 'bpo', name: 'BPO FINANCEIRO', short: 'BPO',
+      bx: 52, by: 0, bw: 12, bh: 19,
+      x1: 53, y1: 1, x2: 62, y2: 17,
+      accent: '#3f8a5c',
+      floorA: '#9db394', floorB: '#a6bc9d',
+      desc: 'Contas a pagar e faturamento, contas a receber e planejamento financeiro estratégico.'
     },
     lounge: {
-      id: 'lounge', name: 'JOGOS & DESCANSO', short: 'Lounge',
+      id: 'lounge', name: 'SALA DE DESCANSO', short: 'Descanso',
       bx: 0, by: 22, bw: 30, bh: 12,
       x1: 1, y1: 23, x2: 28, y2: 32,
-      accent: C.fire3,
-      floorA: '#1d1630', floorB: '#241b3a',
-      desc: 'Sala fechada, separada da operação. Arcade, pebolim, sofás, TV e bar.'
+      accent: '#c98a2b',
+      floorA: '#b98558', floorB: '#c28f62',
+      desc: 'Pufes, sofás, TV, mesa de refeições e café. Plantas por todo lado.'
     },
     reuniao: {
       id: 'reuniao', name: 'SALA DE REUNIÃO', short: 'Reunião',
       bx: 32, by: 22, bw: 16, bh: 12,
       x1: 33, y1: 23, x2: 46, y2: 32,
-      accent: '#a855f7',
-      floorA: '#14182a', floorB: '#191e34',
-      desc: 'Mesa de oito lugares e painel de LED. É aqui que os agentes se reúnem.'
+      accent: '#8a5ac0',
+      floorA: '#b39270', floorB: '#bb9b78',
+      desc: 'Mesa de oito lugares e TV. É aqui que a equipe se reúne.'
+    },
+    jardim: {
+      id: 'jardim', name: 'VARANDA & JARDIM', short: 'Jardim',
+      bx: 50, by: 22, bw: 14, bh: 12,
+      x1: 51, y1: 23, x2: 62, y2: 32,
+      accent: '#4d9a4d',
+      floorA: '#8fae7a', floorB: '#98b783',
+      desc: 'Cantinho verde com bancos, vasos e jardineiras para respirar um pouco.'
     },
     corredor: {
       id: 'corredor', name: 'RECEPÇÃO & CIRCULAÇÃO', short: 'Corredor',
-      accent: '#64748b',
-      floorA: '#10131f', floorB: '#141827',
-      desc: 'Recepção, elevador e a circulação entre as salas.'
+      accent: '#8a7a68',
+      floorA: '#ddd0bd', floorB: '#d4c6b1',
+      desc: 'Recepção, entrada e a circulação entre os setores.'
     }
   };
 
   /* ---------- portas (x, y, orientação) ---------- */
   const DOORS = [
-    { x: 14, y: 8,  o: 'v' }, { x: 14, y: 9,  o: 'v' },   // diretoria -> hall vertical
+    { x: 14, y: 8,  o: 'v' }, { x: 14, y: 9,  o: 'v' },   // diretoria -> hall
     { x: 5,  y: 18, o: 'h' }, { x: 6,  y: 18, o: 'h' },   // diretoria -> corredor
-    { x: 18, y: 8,  o: 'v' }, { x: 18, y: 9,  o: 'v' },   // serviço  -> hall vertical
-    { x: 30, y: 18, o: 'h' }, { x: 31, y: 18, o: 'h' },   // serviço  -> corredor
-    { x: 13, y: 22, o: 'h' }, { x: 14, y: 22, o: 'h' },   // lounge   -> corredor
-    { x: 24, y: 22, o: 'h' }, { x: 25, y: 22, o: 'h' },   // lounge   -> corredor (2ª porta)
-    { x: 38, y: 22, o: 'h' }, { x: 39, y: 22, o: 'h' }    // reunião  -> corredor
+    { x: 18, y: 8,  o: 'v' }, { x: 18, y: 9,  o: 'v' },   // contábil <- hall
+    { x: 26, y: 18, o: 'h' }, { x: 27, y: 18, o: 'h' },   // contábil -> corredor
+    { x: 35, y: 8,  o: 'v' }, { x: 35, y: 9,  o: 'v' },   // contábil -> hall 2
+    { x: 39, y: 8,  o: 'v' }, { x: 39, y: 9,  o: 'v' },   // inteligência <- hall 2
+    { x: 44, y: 18, o: 'h' }, { x: 45, y: 18, o: 'h' },   // inteligência -> corredor
+    { x: 49, y: 8,  o: 'v' }, { x: 49, y: 9,  o: 'v' },   // inteligência -> hall 3
+    { x: 52, y: 8,  o: 'v' }, { x: 52, y: 9,  o: 'v' },   // bpo <- hall 3
+    { x: 55, y: 18, o: 'h' }, { x: 56, y: 18, o: 'h' },   // bpo -> corredor
+    { x: 13, y: 22, o: 'h' }, { x: 14, y: 22, o: 'h' },   // descanso -> corredor
+    { x: 24, y: 22, o: 'h' }, { x: 25, y: 22, o: 'h' },   // descanso -> corredor (2ª porta)
+    { x: 38, y: 22, o: 'h' }, { x: 39, y: 22, o: 'h' },   // reunião  -> corredor
+    { x: 55, y: 22, o: 'h' }, { x: 56, y: 22, o: 'h' }    // jardim   -> corredor
   ];
 
   /* ---------- grade ---------- */
@@ -133,11 +164,13 @@ const WORLD = (() => {
 
   /* ---------- painéis nas paredes altas ---------- */
   const SIGNS = [
-    { o: 'n', x: 20, y: 0,  len: 9,  kind: 'equipe'   },  // serviço: a equipe agora
-    { o: 'n', x: 30, y: 0,  len: 10, kind: 'nome'     },  // nome do escritório (config)
-    { o: 'n', x: 1,  y: 0,  len: 7,  kind: 'eventos'  },  // diretoria: próximos eventos
-    { o: 'w', x: 0,  y: 3,  len: 8,  kind: 'quadro'   },  // diretoria: quadro branco
-    { o: 'w', x: 0,  y: 24, len: 7,  kind: 'nome'     }   // lounge
+    { o: 'n', x: 1,  y: 0,  len: 7,  kind: 'eventos' },  // diretoria: próximos eventos
+    { o: 'w', x: 0,  y: 3,  len: 8,  kind: 'quadro'  },  // diretoria: quadro de anotações
+    { o: 'n', x: 20, y: 0,  len: 7,  kind: 'setor', txt: 'SETOR CONTÁBIL', sub: 'fiscal · pessoal · contábil · legal' },
+    { o: 'n', x: 28, y: 0,  len: 6,  kind: 'equipe'  },  // contábil: a equipe agora
+    { o: 'n', x: 40, y: 0,  len: 9,  kind: 'setor', txt: 'INTELIGÊNCIA DO CLIENTE', sub: 'tributário · ICMS · ISS · gestão' },
+    { o: 'n', x: 53, y: 0,  len: 10, kind: 'setor', txt: 'BPO FINANCEIRO', sub: 'pagar · receber · estratégia' },
+    { o: 'w', x: 0,  y: 24, len: 7,  kind: 'nome'    }   // descanso
   ];
 
   /* ===========================================================
@@ -192,9 +225,9 @@ const WORLD = (() => {
     // faixa pintada no corredor (guia da recepção até as salas)
     c.save();
     c.globalAlpha = .5;
-    for (let x = 2; x <= 45; x++) {
+    for (let x = 2; x <= 61; x++) {
       if (walkable(x, 20) && roomAt(x, 20) === 'corredor')
-        ISO.tile(c, x, 20, ISO.rgba(C.fire2, .1));
+        ISO.tile(c, x, 20, ISO.rgba('#ffffff', .22));
     }
     c.restore();
     pisoCache = { cv, x: x0, y: y0 };
@@ -204,20 +237,7 @@ const WORLD = (() => {
     if (!pisoCache) montaPiso();
     ctx.drawImage(pisoCache.cv, pisoCache.x, pisoCache.y);
 
-    // brilho RGB refletido no piso da sala de serviço
-    ctx.save();
-    ctx.globalCompositeOperation = 'lighter';
-    for (let x = ROOMS.servico.x1; x <= ROOMS.servico.x2; x += 7) {
-      const p = ISO.toScreen(x, 1.5);
-      const hue = (t * 28 + x * 14) % 360;
-      ISO.glow(ctx, p.x, p.y, 120, ISO.hsl(hue, 90, 55), .07);
-    }
-    for (let x = ROOMS.lounge.x1; x <= ROOMS.lounge.x2; x += 8) {
-      const p = ISO.toScreen(x, 28);
-      const hue = (t * 44 + x * 26) % 360;
-      ISO.glow(ctx, p.x, p.y, 150, ISO.hsl(hue, 95, 58), .07);
-    }
-    ctx.restore();
+    void t;   // casa de madeira: sem brilho RGB refletido no piso
   }
 
   /* ---- rótulo flutuante de cada sala ---- */
@@ -233,9 +253,12 @@ const WORLD = (() => {
       ctx.restore();
     };
     put(ROOMS.diretoria, 7, 15.4);
-    put(ROOMS.servico, 33, 16.2);
+    put(ROOMS.servico, 27, 16.2);
+    put(ROOMS.inteligencia, 44.5, 16.2);
+    put(ROOMS.bpo, 57.5, 16.2);
     put(ROOMS.lounge, 14.5, 31.6);
     put(ROOMS.reuniao, 40, 31.4);
+    put(ROOMS.jardim, 56.5, 31.6);
   }
 
   const cacheGrad = new Map();
@@ -389,6 +412,13 @@ const WORLD = (() => {
       ISO.rrect(c, 6, padY, len - 12, hgt, 8); c.fill();
       c.strokeStyle = 'rgba(255,255,255,.07)'; c.lineWidth = 1; c.stroke();
       signNome(c, len, padY, hgt, rgbOn);
+    }
+    else if (s.kind === 'setor') {
+      const padY = 16, hgt = 62;
+      c.fillStyle = 'rgba(30,22,16,.78)';
+      ISO.rrect(c, 6, padY, len - 12, hgt, 8); c.fill();
+      c.strokeStyle = 'rgba(255,230,200,.18)'; c.lineWidth = 1; c.stroke();
+      signNome(c, len, padY, hgt, rgbOn, s.txt, s.sub);
     }
     else if (s.kind === 'equipe')  signEquipe(c, len, t, rgbOn);
     else if (s.kind === 'eventos') signEventos(c, len, rgbOn);
@@ -563,9 +593,9 @@ const WORLD = (() => {
   }
 
   /* ---- placa com o nome do escritório (data/config.json) ---- */
-  function signNome(c, len, y0, h, rgbOn) {
+  function signNome(c, len, y0, h, rgbOn, txt, sub) {
     const E = window.ESCRITORIO || {};
-    const nome = String(E.nome || 'Escritório de Agentes').toUpperCase();
+    const nome = String(txt || E.nome || 'Escritório de Agentes').toUpperCase();
     const cx = len / 2, cy = y0 + h / 2;
     c.save();
     c.textAlign = 'center'; c.textBaseline = 'middle';
@@ -576,10 +606,11 @@ const WORLD = (() => {
     if (rgbOn) { c.shadowColor = 'rgba(124,108,255,.8)'; c.shadowBlur = 14; }
     c.fillText(nome, cx, cy - 6);
     c.shadowBlur = 0;
-    if (E.subtitulo) {
+    const legenda = txt ? sub : E.subtitulo;
+    if (legenda) {
       c.font = `500 ${Math.min(10, len / 22)}px 'Barlow Semi Condensed', sans-serif`;
-      c.fillStyle = 'rgba(200,210,235,.6)'; c.letterSpacing = '2px';
-      c.fillText(String(E.subtitulo).toUpperCase().slice(0, 48), cx, cy + 16);
+      c.fillStyle = 'rgba(235,225,210,.7)'; c.letterSpacing = '2px';
+      c.fillText(String(legenda).toUpperCase().slice(0, 48), cx, cy + 16);
     }
     c.restore();
   }
@@ -589,7 +620,7 @@ const WORLD = (() => {
   function drawDecals(ctx, t) { /* piso liso: sem logo pintado */ }
 
   /* ---------- pontos de interesse ---------- */
-  const SPAWN = { x: 45, y: 20 };          // elevador / recepção
+  const SPAWN = { x: 61, y: 20 };          // elevador / recepção
 
   return {
     W, H, VOID, FLOOR, WALL, DOOR, C,

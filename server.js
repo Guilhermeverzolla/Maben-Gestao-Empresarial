@@ -403,7 +403,7 @@ function desligar(id) {
   try {
     if (process.platform === 'win32') {
       // o dev.mjs desses projetos abre filhos; taskkill derruba a árvore toda
-      spawn('taskkill', ['/pid', String(p.pid), '/t', '/f'], { stdio: 'ignore' });
+      spawn('taskkill', ['/pid', String(p.pid), '/t', '/f'], { stdio: 'ignore', windowsHide: true });
     } else {
       process.kill(-p.pid, 'SIGTERM');
     }
@@ -574,7 +574,8 @@ function perguntar(id, texto, modo) {
   const proc = spawn(CLAUDE_BIN, args, {
     cwd: s.pasta,
     env: process.env,
-    stdio: ['pipe', 'pipe', 'pipe']
+    stdio: ['pipe', 'pipe', 'pipe'],
+    windowsHide: true
   });
   c.proc = proc;
   proc.stdin.on('error', () => { /* processo caiu antes de ler */ });
@@ -642,7 +643,7 @@ function estadoClaude() {
     let saida = '';
     let p;
     try {
-      p = spawn(CLAUDE_BIN, ['auth', 'status'], { stdio: ['ignore', 'pipe', 'ignore'] });
+      p = spawn(CLAUDE_BIN, ['auth', 'status'], { stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true });
     } catch (e) {
       return res({ instalado: false, conectado: false });
     }
