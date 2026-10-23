@@ -1,5 +1,9 @@
 @echo off
-title Escritorio de Agentes
+rem Abrir por aqui tambem fica oculto: sem o argumento "oculto", relanca via VBS (janela 0) e sai.
+if /i not "%~1"=="oculto" (
+  wscript.exe "%~dp0ESCRITORIO OCULTO.vbs"
+  exit /b
+)
 cd /d "%~dp0"
 
 rem ===========================================================

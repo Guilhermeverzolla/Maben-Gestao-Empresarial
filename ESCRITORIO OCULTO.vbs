@@ -4,4 +4,4 @@
 Set sh = CreateObject("WScript.Shell")
 pasta = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
 sh.CurrentDirectory = pasta
-sh.Run "cmd /c """ & pasta & "\INICIAR ESCRITORIO.cmd""", 0, False
+sh.Run "cmd /c """"" & pasta & "\INICIAR ESCRITORIO.cmd"" oculto""", 0, False
