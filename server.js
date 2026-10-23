@@ -365,9 +365,13 @@ async function ligarDeFato(id) {
      que o log: para ver a saída de um sistema, rode o comando dele no
      terminal, que aí ela aparece normalmente. */
   const win = process.platform === 'win32';
+  // o shell só é preciso para o npm (que no Windows é um .cmd). Para o node ele
+  // abre um cmd.exe, e esse cmd cria um console PRÓPRIO e visível para o
+  // processo filho — era daí que vinha uma janela de CMD por agente.
+  const precisaShell = win && !/^node(\.exe)?$/i.test(String(s.comando));
   const child = spawn(s.comando, s.args || [], {
     cwd: s.pasta,
-    shell: win,
+    shell: precisaShell,
     env: Object.assign({}, process.env, s.env || {}),
     detached: true,
     windowsHide: true,
